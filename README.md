@@ -1,6 +1,6 @@
 # ai-harness-template
 
-[![CI](https://github.com/OWNER/REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/ci.yml)
+[![CI](https://github.com/Lucas-Mol/ai-harness-template/actions/workflows/ci.yml/badge.svg)](https://github.com/Lucas-Mol/ai-harness-template/actions/workflows/ci.yml)
 
 A **tool-agnostic, stack-agnostic repository template** for AI-assisted development with good
 *harness engineering*: context, constraints, tools, feedback loops, verification and protection against entropy.
@@ -113,8 +113,8 @@ References:
 
 ## Publishing this template
 
-After pushing to GitHub: **Settings → General → Template repository** (manual step). Replace `OWNER/REPO`
-in the CI badge above.
+After pushing to GitHub: **Settings → General → Template repository** (manual step). Projects created from
+this template should replace `Lucas-Mol/ai-harness-template` in the CI badge above with their own `OWNER/REPO`.
 
 ## License
 
