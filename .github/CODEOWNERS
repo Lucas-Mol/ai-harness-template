@@ -1,0 +1,9 @@
+# Protected paths (see harness.config.yaml: protected_paths) require review from the owners below.
+# Enable "Require review from Code Owners" in the branch protection rules for main.
+/.github/workflows/   {{CODEOWNER}}
+/.github/CODEOWNERS   {{CODEOWNER}}
+/harness.config.yaml  {{CODEOWNER}}
+/scripts/harness/     {{CODEOWNER}}
+/scripts/hooks/       {{CODEOWNER}}
+/AGENTS.md            {{CODEOWNER}}
+/.agents/             {{CODEOWNER}}

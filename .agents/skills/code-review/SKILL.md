@@ -1,0 +1,29 @@
+---
+name: code-review
+description: Review a diff (working tree, branch or PR) against the plan, docs/conventions and the architecture boundaries, producing prioritised findings. Use when asked to review code or before opening a pull request.
+---
+
+# Code review
+
+## Inputs
+
+- The diff: `git diff main...HEAD` (or the working tree / PR the user names).
+- The plan in `docs/plans/` linked to the change, if any.
+- [docs/conventions/](../../../docs/conventions/) and [docs/architecture/boundaries.md](../../../docs/architecture/boundaries.md).
+
+## Checklist
+
+1. **Correctness** — logic errors, edge cases (empty, null, large, concurrent), error handling.
+2. **Scope** — every change is required by the task/plan; no unrelated edits.
+3. **Tests** — behaviour changes are covered; tests would fail without the change; nothing skipped or weakened.
+4. **Boundaries** — dependency direction respected; no vendor types leaking into the domain.
+5. **Security** — input validation, secrets, injection, authz. Escalate to `security-reviewer` if relevant.
+6. **Readability** — names, function size, comments explain *why*.
+7. **Docs** — ADR/plan/README updated when behaviour or decisions changed.
+8. **Harness** — generated files not hand-edited; protected paths untouched.
+
+## Output
+
+A list ordered by severity. For each finding: `severity (blocker|major|minor|nit)`, `file:line`,
+the problem, a concrete failure scenario, and a suggested fix. End with a one-line verdict.
+Do not edit code during a review unless asked.

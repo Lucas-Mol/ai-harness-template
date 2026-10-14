@@ -1,0 +1,34 @@
+name: Harness GC
+
+on:
+  schedule:
+    - cron: "0 8 * * 1" # Mondays 08:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed to date TODOs with git blame
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: make harness-deps
+      - run: make harness-gc ARGS="--output harness-gc-report.md"
+      - name: Open or update the GC issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh label create harness-gc --color BFD4F2 --description "Harness garbage collection report" 2>/dev/null || true
+          existing="$(gh issue list --label harness-gc --state open --json number --jq '.[0].number')"
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --body-file harness-gc-report.md
+          else
+            gh issue create --title "Harness GC report" --label harness-gc --body-file harness-gc-report.md
+          fi

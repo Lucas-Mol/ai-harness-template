@@ -1,0 +1,23 @@
+# Tool-neutral MCP server declarations. scripts/harness/sync.py translates enabled servers into each
+# target's format (.mcp.json, .cursor/mcp.json, .codex/config.toml, .gemini/settings.json).
+#
+# Fields:
+#   enabled:           true | false
+#   type:              stdio | http
+#   command, args:     stdio servers
+#   url:               http servers
+#   bearer_token_env:  http servers — NAME of the env var holding the token (sent as "Authorization: Bearer …")
+#   env:               stdio servers — NAMES of env vars forwarded to the server
+# Never put secret values here.
+servers:
+  github:
+    enabled: false
+    type: http
+    url: https://api.githubcopilot.com/mcp/
+    bearer_token_env: GITHUB_TOKEN
+  filesystem-example:
+    enabled: false
+    type: stdio
+    command: npx
+    args: ["-y", "@modelcontextprotocol/server-filesystem", "."]
+    env: []

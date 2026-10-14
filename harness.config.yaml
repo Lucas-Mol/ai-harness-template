@@ -1,0 +1,48 @@
+# Harness configuration. Read by scripts/harness/* and scripts/hooks/*.
+# Keep list values simple (one item per line, "- value"): hooks parse some of them with awk.
+version: 1
+
+project:
+  name: "{{PROJECT_NAME}}"
+  description: "{{PROJECT_DESCRIPTION}}"
+
+# Tools to generate adapters for (scripts/harness/sync.py).
+# Supported: claude, copilot, cursor, codex, gemini. Keep this as a one-line list.
+targets: [claude, copilot, cursor, codex, gemini]
+
+# Agents must not write to these paths; a human makes these changes.
+# Glob semantics: "*" and "**" match across "/"; patterns without "/" also match the basename.
+protected_paths:
+  - .github/workflows/**
+  - .github/CODEOWNERS
+  - harness.config.yaml
+  - "**/*.lock"
+  - "**/package-lock.json"
+  - "**/go.sum"
+  - ".env*"
+
+# Files agents must not read (translated into tool permissions where supported).
+secret_files:
+  - .env
+  - .env.*
+  - "**/*.pem"
+  - "**/*.key"
+
+# Shell command prefixes agents must not run (translated into tool permissions where supported).
+deny_commands:
+  - rm -rf
+  - git push --force
+  - git push -f
+  - git reset --hard
+  - git clean -fd
+
+limits:
+  agents_md_max_lines: 150
+  skill_max_lines: 300
+  agent_max_lines: 200
+
+plans:
+  stale_after_days: 14
+
+gc:
+  todo_max_age_days: 90

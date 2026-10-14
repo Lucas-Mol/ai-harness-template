@@ -1,0 +1,33 @@
+---
+name: execute-plan
+description: Implement an approved plan from docs/plans/active/ step by step, keeping its checklist and handoff current. Use when the user says to implement, continue or resume a plan.
+---
+
+# Execute an approved plan
+
+## Before starting
+
+1. Open the plan. Confirm its status is **Approved** or **In progress**; otherwise stop and ask.
+2. Read the *Handoff* section — resume from *Next step*, not from the beginning.
+3. Set status to **In progress** and update *Last updated*.
+
+## Loop (one step at a time)
+
+1. Implement the smallest change that completes the step. Follow existing patterns.
+2. Add or update tests for the behaviour change.
+3. Run `make test-fast`. If it fails, fix it (use `debug-failing-check` if the cause is not obvious).
+4. Tick the step's checkbox and update *Handoff* (state, next step, files touched).
+5. If reality differs from the plan, **stop**: add a *Decision log* entry and ask before deviating significantly.
+
+## Finishing
+
+1. Run `make check` (and `make harness-lint` if harness files changed). Both must pass.
+2. Verify every acceptance criterion by running its command.
+3. Fill the final *Handoff*, set status to **Done** and move the file to `docs/plans/completed/`.
+4. Report: what changed, files touched, anything left undone.
+
+## Never
+
+- Skip, disable or weaken tests to finish a step.
+- Mark a step done without running its verification.
+- Expand scope beyond the plan without approval.

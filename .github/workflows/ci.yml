@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  harness:
+    name: Harness lint & secret scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: make harness-deps
+      - run: make harness-lint
+      - run: scripts/hooks/scan-secrets.sh --all
+
+  check:
+    name: make check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # Add your stack's toolchain setup here (actions/setup-java, setup-python + uv, setup-node + pnpm, setup-go).
+      - name: Verify stack
+        id: stack
+        run: |
+          if [ -f stack.mk ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::No stack.mk yet — 'make check' skipped. Run 'make harness-init' or copy one from examples/."
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          fi
+      - if: steps.stack.outputs.configured == 'true'
+        run: make setup
+      - if: steps.stack.outputs.configured == 'true'
+        run: make check

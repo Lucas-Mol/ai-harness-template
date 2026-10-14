@@ -1,0 +1,24 @@
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Local, per-developer agent settings
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Harness outputs
+harness-gc-report.md
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

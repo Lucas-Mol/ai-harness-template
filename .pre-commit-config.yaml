@@ -1,0 +1,29 @@
+# Install: pipx install pre-commit && pre-commit install
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: \.md$
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ["--maxkb=500"]
+      - id: detect-private-key
+
+  - repo: local
+    hooks:
+      - id: scan-secrets
+        name: scan secrets
+        entry: scripts/hooks/scan-secrets.sh
+        language: script
+        types: [text]
+      - id: harness-lint
+        name: harness lint
+        entry: make harness-lint
+        language: system
+        pass_filenames: false
+        always_run: true
